@@ -37,21 +37,22 @@ const Header = (props) => {
     localStorage.setItem('read',read)
     const [count, setCount] = useState([]);
     let [toastAnimation, setToastAnimation] = useState("toast-alert closeAnimation");
-    // if (!listening && (user_info != null) ) {
-    //     eventSource = new EventSource(`/test/subscribe/${user_info.email}`);
-    //     eventSource.addEventListener("sse", (event) => {
-    //         const result = JSON.parse(event.data);
-    //         console.log("received:", result);
-    //         setData(old => [...old, result])
-    //         setRead(0)
-    //         setCount(old => [...old, result])
-    //         // setCount(count +1)
-    //     });
-    //     eventSource.onopen = (event) => {
-    //         console.log("connection opened")
-    //     }
-    //     setListening(true);
-    // }
+    if (!listening && (user_info != null) ) {
+        eventSource = new EventSource(`/test/subscribe/${user_info.email}`);
+        eventSource.addEventListener("sse", (event) => {
+            checkInputValues()
+            const result = JSON.parse(event.data);
+            console.log("received:", result);
+            setData(old => [...old, result])
+            setRead(0)
+            setCount(old => [...old, result])
+            // setCount(count +1)
+        });
+        eventSource.onopen = (event) => {
+            console.log("connection opened")
+        }
+        setListening(true);
+    }
 
 
 
@@ -135,7 +136,6 @@ const Header = (props) => {
                             }
                             <FiBell onClick={()=>{
                                 // setCount(count +1)
-                                checkInputValues();
                                 AlarmMyOpen();
                                 console.log(localStorage.getItem('read'))
                                 setRead(1);
